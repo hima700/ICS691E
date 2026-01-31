@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Dropper : MonoBehaviour
 {
-    [SerializeField] float timeToWait = 3.0f;
-
+    [SerializeField] float dropForce = 10f;
+    
     MeshRenderer meshRenderer;
     Rigidbody rigidBody;
-
+    bool hasDropped = false;
     bool hasLanded = false;
 
     void Start()
@@ -18,23 +18,21 @@ public class Dropper : MonoBehaviour
         rigidBody.useGravity = false;
     }
 
-    void Update()
+    public void Drop()
     {
-        if (Time.time > timeToWait)
-        {
-            meshRenderer.enabled = true;
-            rigidBody.useGravity = true;
-        }
+        if (hasDropped) return;
+        hasDropped = true;
+        
+        meshRenderer.enabled = true;
+        rigidBody.useGravity = true;
+        rigidBody.AddForce(Vector3.down * dropForce, ForceMode.Impulse);
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        // Optional: check tag
         if (collision.gameObject.CompareTag("Ground") && !hasLanded)
         {
             hasLanded = true;
-
-            // Freeze All positions AFTER hitting ground
             rigidBody.constraints = RigidbodyConstraints.FreezePosition
                                   | RigidbodyConstraints.FreezeRotation;
         }

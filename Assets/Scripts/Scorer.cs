@@ -5,9 +5,14 @@ public class Scorer : MonoBehaviour
 {
     int hits = 0;
     [SerializeField] TextMeshProUGUI hitText;
+    
+    public AudioClip obstacleHitSound;
+    public AudioClip projectileHitSound;
+    private AudioSource audioSource;
 
     void Start()
     {
+        audioSource = gameObject.AddComponent<AudioSource>();
         UpdateUI();
     }
 
@@ -18,6 +23,10 @@ public class Scorer : MonoBehaviour
         {
             hits++;
             UpdateUI();
+
+            // Play obstacle hit sound
+            if (obstacleHitSound != null)
+                audioSource.PlayOneShot(obstacleHitSound);
 
             MeshRenderer mr = hit.gameObject.GetComponent<MeshRenderer>();
             if (mr) mr.material.color = Color.black;
@@ -31,6 +40,10 @@ public class Scorer : MonoBehaviour
     {
         hits++;
         UpdateUI();
+        
+        // Play projectile hit sound
+        if (projectileHitSound != null)
+            audioSource.PlayOneShot(projectileHitSound);
     }
 
     void UpdateUI()
