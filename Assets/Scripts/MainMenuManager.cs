@@ -62,13 +62,13 @@ public class MainMenuManager : MonoBehaviour
         switch (buttonClicked)
         {
             case SocialButtons.website:
-                websiteLink = "http://www.google.com"; //TODO: Put actual website
+                websiteLink = "https://hima700.github.io/ICS691E/syke.html"; //TODO: Put actual website
                 break;
             case SocialButtons.twitter:
-                websiteLink = "";
+                websiteLink = "https://hima700.github.io/ICS691E/syke.html";
                 break;
             case SocialButtons.youtube:
-                websiteLink = "";
+                websiteLink = "https://hima700.github.io/ICS691E/syke.html";
                 break;
             default:
                 Debug.LogError("Social button clicked not implemented on SocialButtonClicked method");

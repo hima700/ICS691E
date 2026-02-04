@@ -10,6 +10,9 @@ public class Scorer : MonoBehaviour
     public AudioClip projectileHitSound;
     private AudioSource audioSource;
 
+    // ── Public getter so GameManager / WinZone can read it ──
+    public int Hits => hits;
+
     void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
@@ -23,6 +26,7 @@ public class Scorer : MonoBehaviour
         {
             hits++;
             UpdateUI();
+            NotifyGameManager();
 
             // Play obstacle hit sound
             if (obstacleHitSound != null)
@@ -40,6 +44,7 @@ public class Scorer : MonoBehaviour
     {
         hits++;
         UpdateUI();
+        NotifyGameManager();
         
         // Play projectile hit sound
         if (projectileHitSound != null)
@@ -48,6 +53,14 @@ public class Scorer : MonoBehaviour
 
     void UpdateUI()
     {
-        hitText.text = "Hits: " + hits;
+        int maxHits = GameManager.Instance != null ? GameManager.Instance.MaxHits : 0;
+        hitText.text = "Hits: " + hits + "/" + maxHits;
+    }
+
+    // ── NEW: tell GameManager about the hit ──
+    void NotifyGameManager()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnHitRegistered(hits);
     }
 }
